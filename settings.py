@@ -54,3 +54,6 @@ ONE_LIVES = 'onelives.png'
 TWO_LIVES = 'twolives.png'
 THREE_LIVES = 'threelives.png'
 FOUR_LIVES = 'fourlives.png'
+
+DIR_HORIZ = 'x'
+DIR_VERT = 'y'

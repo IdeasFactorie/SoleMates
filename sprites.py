@@ -3,6 +3,8 @@ from settings import *
 vec = pygame.math.Vector2
 
 
+
+
 class Spritesheet:
     def __init__(self, filename):
         self.spritesheet = pygame.image.load(filename).convert()
@@ -73,16 +75,18 @@ class Player(pygame.sprite.Sprite):
             self.vel *= 0.7071
 
     def collide_with_obstacles(self, dir):
-        if dir == 'x':
+        if dir == DIR_HORIZ:
             hits = pygame.sprite.spritecollide(self, self.game.obstacles, False)
             if hits:
-                if self.vel.x > 0:
+                movingLeft = self.vel.x > 0
+                movingRight = self.vel.x < 0
+                if movingLeft:
                     self.pos.x = hits[0].rect.left - self.rect.width
-                if self.vel.x < 0:
+                if movingRight:
                     self.pos.x = hits[0].rect.right
                 self.vel.x = 0
                 self.rect.x = self.pos.x
-        if dir == 'y':
+        if dir == DIR_VERT:
             hits = pygame.sprite.spritecollide(self, self.game.obstacles, False)
             if hits:
                 if self.vel.y > 0:
@@ -98,9 +102,9 @@ class Player(pygame.sprite.Sprite):
         self.get_keys()
         self.pos += self.vel * self.game.dt
         self.rect.x = self.pos.x
-        self.collide_with_obstacles('x')
+        self.collide_with_obstacles(DIR_HORIZ)
         self.rect.y = self.pos.y
-        self.collide_with_obstacles('y')
+        self.collide_with_obstacles(DIR_VERT)
 
         if self.health <= 0:
             self.lives -= 1
