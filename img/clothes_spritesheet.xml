@@ -1,0 +1,6 @@
+<textureatlas imagepath="clothes_spritesheet.png">
+    <subtexture name="clothes3" x="163" y="0" width="137" height="121"></subtexture>
+    <subtexture name="clothes4" x="0" y="87" width="162" height="102"></subtexture>
+    <subtexture name="clothes1" x="0" y="0" width="134" height="86"></subtexture>
+    <subtexture name="clothes2" x="0" y="190" width="213" height="87"></subtexture>
+</textureatlas>

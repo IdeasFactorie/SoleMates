@@ -1,0 +1,7 @@
+<textureatlas imagepath="robot_spritesheet.png">
+    <subtexture name="robot4" x="0" y="0" width="123" height="208"></subtexture>
+    <subtexture name="robot5" x="124" y="0" width="123" height="208"></subtexture>
+    <subtexture name="robot1" x="248" y="0" width="123" height="208"></subtexture>
+    <subtexture name="robot2" x="0" y="209" width="123" height="208"></subtexture>
+    <subtexture name="robot3" x="124" y="209" width="123" height="208"></subtexture>
+</textureatlas>

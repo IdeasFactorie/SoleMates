@@ -1,0 +1,8 @@
+<textureatlas imagepath="socky_spritesheet.png">
+    <subtexture name="walk3" x="0" y="0" width="59" height="32"></subtexture>
+    <subtexture name="dead" x="0" y="99" width="57" height="14"></subtexture>
+    <subtexture name="socky_neutral_1" x="60" y="0" width="32" height="32"></subtexture>
+    <subtexture name="socky_neutral_2" x="60" y="33" width="32" height="31"></subtexture>
+    <subtexture name="walk1" x="0" y="33" width="59" height="32"></subtexture>
+    <subtexture name="walk2" x="0" y="66" width="59" height="32"></subtexture>
+</textureatlas>

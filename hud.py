@@ -1,67 +1,50 @@
 import sys
 import pygame
+from settings import *
 
 
 class HUD(pygame.sprite.Sprite):
 
-    def __init__(self, health, numlives):
+    def __init__(self, surf, health, x, y, numlives):
         pygame.sprite.Sprite.__init__(self)
+        self.surf = surf
         self.health = health
         self.numlives = numlives
+        inventory = INVENTORY_IMG
 
-
-    def health_indicator(self, health):
-        healthbar = (20, 20, health, 30)
-        healthborder = pygame.image.load('assets/healthbar.png')
-        red = 255, 0, 0
-
-        pygame.draw.rect(screen, red, healthbar)
-        screen.blit(healthborder, (10, 10))
-
-    def lives_indicator(self, numlives):
+        livesGraphic = FOUR_LIVES
         if numlives == 0:
-            livesGraphic = pygame.image.load('assets/zerolives.png')
+            livesGraphic = ZERO_LIVES
         if numlives == 1:
-            livesGraphic = pygame.image.load('assets/onelives.png')
+            livesGraphic = ONE_LIVES
         if numlives == 2:
-            livesGraphic = pygame.image.load('assets/twolives.png')
+            livesGraphic = TWO_LIVES
         if numlives == 3:
-            livesGraphic = pygame.image.load('assets/threelives.png')
+            livesGraphic = THREE_LIVES
         if numlives == 4:
-            livesGraphic = pygame.image.load('assets/fourlives.png')
-
-        screen.blit(livesGraphic, (150, 15))
-
-    def inventory_display(self):
-        inventory = pygame.image.load('assets/inventory.png')
-        screen.blit(inventory, (785, 10))
-
-    def refresh_hud(self) :
-        self.health_indicator(self.health)
-        self.lives_indicator(self.numlives)
-        self.inventory_display()
+            livesGraphic = FOUR_LIVES
 
 
-# For testing:
 
-pygame.init()
+        if health < 0:
+            health = 0
+        fill = health * 10
+        outline_rect = pygame.Rect(x, y, BAR_LENGTH, BAR_HEIGHT)
+        fill_rect = pygame.Rect(x, y, fill, BAR_HEIGHT)
+        if health > 6:
+            colour = GREEN
+        elif health > 3:
+            colour = YELLOW
+        else:
+            colour = RED
 
-size = width, height = 1024, 768
-screen = pygame.display.set_mode(size)
+        pygame.draw.rect(surf, BLACK, outline_rect)
+        pygame.draw.rect(surf, colour, fill_rect)
+        #surf.blit(livesGraphic, (150, 15))
+        #surf.blit(inventory, (785, 10))
 
-clock = pygame.time.Clock()
 
 
-while 1:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            sys.exit()
 
-        hudisplay = HUD(50, 1)
-        hudisplay.refresh_hud()
-
-        pygame.display.flip()
-
-        clock.tick(30)
 
 
