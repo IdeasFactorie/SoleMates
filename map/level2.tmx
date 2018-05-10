@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" tiledversion="1.1.4" orientation="orthogonal" renderorder="right-down" width="64" height="24" tilewidth="32" tileheight="32" infinite="0" nextobjectid="38">
- <tileset firstgid="1" source="level_two.tsx"/>
+ <tileset firstgid="1" source="../../../../Desktop/New folder/map/level_two.tsx"/>
  <layer name="Floor" width="64" height="24" locked="1">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,214,262,214,262,214,262,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,214,262,214,262,214,262,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -169,6 +169,17 @@
 169,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,167,168
 </data>
  </layer>
+ <objectgroup name="sprites">
+  <object id="26" name="player" x="64" y="420" width="32" height="32"/>
+  <object id="27" name="boss" x="1794" y="254" width="32" height="30"/>
+  <object id="29" name="obstacle" x="1376.83" y="633.166" width="59.8333" height="124.167"/>
+  <object id="32" name="obstacle" x="1365.67" y="590" width="86.8333" height="67.5"/>
+  <object id="33" name="mob" x="410" y="32" width="30" height="32"/>
+  <object id="34" name="mob" x="251" y="162" width="30" height="32"/>
+  <object id="35" name="mob" x="1439" y="34" width="30" height="32"/>
+  <object id="36" name="mob" x="1245" y="162" width="30" height="32"/>
+  <object id="37" name="mob" x="1637" y="156" width="30" height="32"/>
+ </objectgroup>
  <layer name="ObjectsTop" width="64" height="24">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -226,38 +237,26 @@
 </data>
  </layer>
  <objectgroup name="furniture">
-  <object id="12" name="furniture" x="85" y="142" width="114" height="39"/>
-  <object id="14" name="furniture" x="107" y="161.5" width="69" height="83"/>
-  <object id="15" name="furniture" x="606" y="140.5" width="34" height="83"/>
-  <object id="16" name="furniture" x="990" y="141.5" width="34" height="83"/>
-  <object id="17" name="furniture" x="353" y="575" width="222" height="167"/>
-  <object id="19" name="furniture" x="1290" y="196" width="64" height="88"/>
-  <object id="20" name="furniture" x="1917" y="642" width="103" height="93"/>
-  <object id="21" name="furniture" x="934" y="677.333" width="78" height="58"/>
-  <object id="23" name="furniture" x="927.667" y="505" width="95.3333" height="82.6667"/>
-  <object id="24" name="furniture" x="970.667" y="576" width="3.33333" height="122.667"/>
-  <object id="25" name="furniture" x="1323" y="41.9998" width="3.33333" height="156"/>
- </objectgroup>
- <objectgroup name="sprites">
-  <object id="26" name="player" x="64" y="420" width="32" height="32"/>
-  <object id="27" name="boss" x="1794" y="254" width="32" height="30"/>
-  <object id="29" name="furniture" x="1376.83" y="655.833" width="59.8333" height="71.5"/>
-  <object id="32" name="furniture" x="1365.67" y="590" width="86.8333" height="67.5"/>
-  <object id="33" name="mob" x="410" y="32" width="30" height="32"/>
-  <object id="34" name="mob" x="251" y="162" width="30" height="32"/>
-  <object id="35" name="mob" x="1439" y="34" width="30" height="32"/>
-  <object id="36" name="mob" x="1245" y="162" width="30" height="32"/>
-  <object id="37" name="mob" x="1637" y="156" width="30" height="32"/>
+  <object id="12" name="obstacle" x="93" y="81.3333" width="106" height="99.6667"/>
+  <object id="14" name="obstacle" x="107" y="135.5" width="69" height="109"/>
+  <object id="15" name="obstacle" x="606" y="75.1667" width="34" height="148.333"/>
+  <object id="16" name="obstacle" x="990" y="63.5" width="34" height="161"/>
+  <object id="17" name="obstacle" x="353" y="575" width="222" height="193.667"/>
+  <object id="19" name="obstacle" x="1290" y="196" width="64" height="88"/>
+  <object id="20" name="obstacle" x="1917" y="642" width="115.667" height="114.333"/>
+  <object id="21" name="obstacle" x="934" y="677.333" width="78" height="90.6667"/>
+  <object id="23" name="obstacle" x="927.667" y="505" width="95.3333" height="82.6667"/>
+  <object id="24" name="obstacle" x="970.667" y="552" width="3.33333" height="178"/>
  </objectgroup>
  <objectgroup name="walls">
-  <object id="1" name="wall" x="-0.787879" y="-1" width="382.788" height="140"/>
-  <object id="4" name="wall" x="545" y="2" width="798" height="140"/>
-  <object id="5" name="wall" x="1504" y="0" width="545" height="140"/>
-  <object id="6" name="wall" x="1341.5" y="0" width="163" height="32"/>
-  <object id="7" name="wall" x="382.5" y="1" width="164" height="30"/>
-  <object id="8" name="wall" x="2015.35" y="142.636" width="34" height="174"/>
-  <object id="9" name="wall" x="2014" y="478" width="34" height="290"/>
-  <object id="10" name="wall" x="-0.272727" y="136.212" width="32" height="631.5"/>
-  <object id="11" name="wall" x="30.5" y="736" width="1983.39" height="32"/>
+  <object id="1" name="obstacle" x="-1.45455" y="-1" width="382.788" height="140"/>
+  <object id="4" name="obstacle" x="545" y="2" width="798" height="140"/>
+  <object id="5" name="obstacle" x="1504" y="0" width="545" height="140"/>
+  <object id="6" name="obstacle" x="1224.17" y="0" width="369" height="32"/>
+  <object id="7" name="obstacle" x="281.167" y="1" width="350.667" height="30"/>
+  <object id="8" name="obstacle" x="2015.35" y="69.3027" width="34" height="247.333"/>
+  <object id="9" name="obstacle" x="2014" y="478" width="34" height="290"/>
+  <object id="10" name="obstacle" x="-0.272727" y="51.5453" width="32" height="716.167"/>
+  <object id="11" name="obstacle" x="2.5" y="736" width="2042.06" height="32"/>
  </objectgroup>
 </map>

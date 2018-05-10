@@ -1,67 +1,52 @@
 import sys
 import pygame
+from settings import *
+from os import path
 
 
-class HUD(pygame.sprite.Sprite):
+class DrawHUD(pygame.sprite.Sprite):
 
-    def __init__(self, health, numlives):
+    def __init__(self, health, numlives, surface):
         pygame.sprite.Sprite.__init__(self)
         self.health = health
         self.numlives = numlives
+        self.surface = surface
 
+        game_folder = path.dirname(__file__)
+        img_folder = path.join(game_folder, 'img')
 
-    def health_indicator(self, health):
-        healthbar = (20, 20, health, 30)
-        healthborder = pygame.image.load('assets/healthbar.png')
-        red = 255, 0, 0
+        self.inventory_img = pygame.image.load(path.join(img_folder, INVENTORY_IMG)).convert_alpha()
+        self.zerolives_img = pygame.image.load(path.join(img_folder, ZERO_LIVES)).convert_alpha()
+        self.onelives_img = pygame.image.load(path.join(img_folder, ONE_LIVES)).convert_alpha()
+        self.twolives_img = pygame.image.load(path.join(img_folder, TWO_LIVES)).convert_alpha()
+        self.threelives_img = pygame.image.load(path.join(img_folder, THREE_LIVES)).convert_alpha()
+        self.fourlives_img = pygame.image.load(path.join(img_folder, FOUR_LIVES)).convert_alpha()
+        self.healthborder_img = pygame.image.load(path.join(img_folder, HEALTH_BORDER)).convert_alpha()
 
-        pygame.draw.rect(screen, red, healthbar)
-        screen.blit(healthborder, (10, 10))
+        fill = self.health * 10
+        self.outline_rect = pygame.Rect(13, 13, BAR_LENGTH, BAR_HEIGHT)
+        self.fill_rect = pygame.Rect(13, 13, fill, BAR_HEIGHT)
 
-    def lives_indicator(self, numlives):
+        if self.health > 6:
+            self.colour = GREEN
+        elif self.health > 3:
+            self.colour = YELLOW
+        else:
+            self.colour = RED
+
         if numlives == 0:
-            livesGraphic = pygame.image.load('assets/zerolives.png')
-        if numlives == 1:
-            livesGraphic = pygame.image.load('assets/onelives.png')
-        if numlives == 2:
-            livesGraphic = pygame.image.load('assets/twolives.png')
-        if numlives == 3:
-            livesGraphic = pygame.image.load('assets/threelives.png')
-        if numlives == 4:
-            livesGraphic = pygame.image.load('assets/fourlives.png')
+            livesgraphic = self.zerolives_img
+        elif numlives == 1:
+            livesgraphic = self.onelives_img
+        elif numlives == 2:
+            livesgraphic = self.twolives_img
+        elif numlives == 3:
+            livesgraphic = self.threelives_img
+        else:
+            livesgraphic = self.fourlives_img
 
-        screen.blit(livesGraphic, (150, 15))
-
-    def inventory_display(self):
-        inventory = pygame.image.load('assets/inventory.png')
-        screen.blit(inventory, (785, 10))
-
-    def refresh_hud(self) :
-        self.health_indicator(self.health)
-        self.lives_indicator(self.numlives)
-        self.inventory_display()
-
-
-# For testing:
-
-pygame.init()
-
-size = width, height = 1024, 768
-screen = pygame.display.set_mode(size)
-
-clock = pygame.time.Clock()
-
-
-while 1:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            sys.exit()
-
-        hudisplay = HUD(50, 1)
-        hudisplay.refresh_hud()
-
-        pygame.display.flip()
-
-        clock.tick(30)
-
+        pygame.draw.rect(self.surface, self.colour, self.fill_rect)
+        self.surface.blit(self.healthborder_img, (3, 3))
+        self.surface.blit(livesgraphic, (140, 8))
+        self.surface.blit(self.inventory_img, (790, 3))
 
