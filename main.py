@@ -4,6 +4,7 @@ import pygame
 import os
 import sys
 from settings import *
+from eventtypes import *
 
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -14,13 +15,21 @@ os.environ['SDL_VIDEO_CENTERED'] = '1'
 game = Game(screen, clock)
 menu = Menu(screen, clock)
 
+state = "MENU"
 
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
+        elif event.type == START_LEVEL1_EVENT:
+            state = "GAME"
+            game.new()
         else:
-            menu.handle_event(event)
-    menu.run()
-
-
+            if state == "MENU":
+                menu.handle_event(event)
+            elif state == "GAME":
+                pass
+    if state == "MENU":
+        menu.run()
+    elif state == "GAME":
+        game.run()

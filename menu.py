@@ -1,5 +1,7 @@
 import pygame
 from settings import *
+from eventtypes import *
+
 
 class MenuItem:
     def __init__(self, menu, label, activate_func, disabled=False):
@@ -114,7 +116,29 @@ class Menu:
             self.screen.blit(label_surface, (posx, posy))
 
     def handle_event(self, event):
-        pass
+        if event.type == pygame.MOUSEBUTTONUP:
+            self.handle_mouse_click()
+        if event.type == MENU_CLICK_EVENT:
+            self.handle_menu_click(event.menu_item)
+
+    def handle_menu_click(self, menu_item):
+        if menu_item.label == "New Game":
+            self._cur_menu = "DIFFICULTY_MENU"
+        elif (menu_item.label == "Easy" or
+              menu_item.label == "Hard" or
+              menu_item.label == "Medium"):
+            pygame.event.post(pygame.event.Event(START_LEVEL1_EVENT, dict()))
+
+    def handle_mouse_click(self):
+        (mouse_x, mouse_y) = pygame.mouse.get_pos()
+
+        for label_surface, (posx, posy), menu_item in self._menus[self._cur_menu]:
+            (label_w, label_h) = label_surface.get_size()
+            label_rect = pygame.Rect(posx, posy, label_w, label_h)
+
+            if label_rect.collidepoint(mouse_x, mouse_y):
+                pygame.event.post(pygame.event.Event(MENU_CLICK_EVENT, menu_item=menu_item))
+
 
     def check_mouse(self):
         (mouse_x, mouse_y) = pygame.mouse.get_pos()
