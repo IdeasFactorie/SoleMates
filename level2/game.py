@@ -21,18 +21,16 @@ class Game:
         img_folder = path.join(game_folder, '..', 'img')
         map_folder = game_folder
         # map files
-        self.map = TiledMap(path.join(map_folder, 'level1.tmx'))
+        self.map = TiledMap(path.join(map_folder, 'level2.tmx'))
         self.map_img = self.map.make_map()
         self.map_rect = self.map_img.get_rect()
 
         # spritesheets
         self.player_spritesheet = Spritesheet(path.join(img_folder, PLAYER_SPRITESHEET))
-        self.clothes_spritesheet = Spritesheet(path.join(img_folder, CLOTHES_SPRITESHEET))
-        self.robot_spritesheet = Spritesheet(path.join(img_folder, ROBOT_SPRITESHEET))
 
-
-        # item files
-        self.zap_img = pygame.image.load(path.join(img_folder, ZAP_IMG)).convert_alpha()
+        # enemy files
+        self.spider_img = pygame.image.load(path.join(img_folder, SPIDER_IMG)).convert_alpha()
+        self.vacuum_img = pygame.image.load(path.join(img_folder, VACUUM_IMG)).convert_alpha()
 
 
     # to start new game creates new instances of sprites, camera, tiles
@@ -54,9 +52,9 @@ class Game:
                 Obstacle(self, tile_object.x, tile_object.y,
                          tile_object.width, tile_object.height)
             if tile_object.name == 'boss':
-                self.robot = Robot(self, tile_object.x, tile_object.y)
+                self.vacuum = Vacuum(self, tile_object.x, tile_object.y)
             if tile_object.name == 'mob':
-                self.clothes = Clothes(self, tile_object.x, tile_object.y)
+                self.spider = Spider(self, tile_object.x, tile_object.y)
             if tile_object.name == 'clickable':
                 Item(self, tile_object.x, tile_object.y)
 
@@ -79,7 +77,7 @@ class Game:
     def update(self):
         self.all_sprites.update()
         self.camera.update(self.player)
-        # zaps hit socky
+
         hits = pygame.sprite.groupcollide(self.socks, self.hits, False, True)
         for hit in hits:
             hit.health -= ZAP_DAMAGE

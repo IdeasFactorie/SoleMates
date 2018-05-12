@@ -1,6 +1,7 @@
 from menu import Menu
 from bonus_level import BonusLevel
 from level1 import Level1
+from level2 import Level2
 import pygame
 import os
 import sys
@@ -21,6 +22,7 @@ os.environ['SDL_VIDEO_CENTERED'] = '1'
 menu = Menu(screen, clock)
 bonus_level = BonusLevel()
 level1 = Level1(screen, clock)
+level2 = Level2(screen, clock)
 
 state = STATE_MENU
 
@@ -32,7 +34,8 @@ while True:
             state = STATE_LEVEL1
             level1.new()
         elif event.type == START_LEVEL2_EVENT:
-            pass
+            state = STATE_LEVEL2
+            level2.new()
         elif event.type == START_BONUS_LEVEL_EVENT:
             state = STATE_BONUS_LEVEL
         else:
@@ -44,5 +47,7 @@ while True:
         menu.run()
     elif state == STATE_LEVEL1:
         level1.run()
+    elif state == STATE_LEVEL2:
+        level2.run()
     elif state == STATE_BONUS_LEVEL:
         bonus_level.run()
