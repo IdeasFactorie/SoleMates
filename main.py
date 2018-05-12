@@ -1,5 +1,6 @@
 from game import Game
 from menu import Menu
+from bonus_level import BonusLevel
 import pygame
 import os
 import sys
@@ -14,8 +15,9 @@ os.environ['SDL_VIDEO_CENTERED'] = '1'
 
 game = Game(screen, clock)
 menu = Menu(screen, clock)
+bonus_level = BonusLevel()
 
-state = "MENU"
+state = "BONUS_LEVEL"
 
 while True:
     for event in pygame.event.get():
@@ -33,3 +35,5 @@ while True:
         menu.run()
     elif state == "GAME":
         game.run()
+    elif state == "BONUS_LEVEL":
+        bonus_level.run()
