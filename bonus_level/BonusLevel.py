@@ -364,7 +364,3 @@ class BonusLevel:
             self.draw_lives(screen, WIDTH - 100, 5, player.lives, self.player_mini_img)
             # *after* drawing everything, flip the display
             pygame.display.flip()
-
-
-game = BonusLevel()
-game.run()
