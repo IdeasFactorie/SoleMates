@@ -213,10 +213,14 @@ class Robot(pygame.sprite.Sprite):
 
     def attack(self):
         now = pygame.time.get_ticks()
+        fire_points = [400, 450, 520, 600]
+
         if self.attacking:
             if now - self.last_shot > ZAP_RATE:
                 self.last_shot = now
-                Zap(self.game)
+                for i in range(0, 4):
+                    fire_from = fire_points[i]
+                    Zap(self.game, fire_from)
 
     def load_images(self):
         self.frames = [self.game.robot_spritesheet.get_image(248, 0, 123, 208),
@@ -259,19 +263,21 @@ class Robot(pygame.sprite.Sprite):
         self.rect.y = self.pos.y
 
 class Zap(pygame.sprite.Sprite):
-    def __init__(self, game):
+    def __init__(self, game, fire_from):
         self.groups = game.all_sprites, game.zaps
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.game = game
+        self.fire_from = fire_from
         self.image = game.zap_img
         self.rect = self.image.get_rect()
         self.rect.x = 1088
-        self.rect.y = 480
+        self.rect.y = fire_from
         self.vel = vec(ZAP_SPEED, 0)
         self.pos = vec(self.rect.x, self.rect.y)
         self.spawn_time = pygame.time.get_ticks()
 
     def update(self):
+
         self.pos -= self.vel * self.game.dt
         self.rect.x = self.pos.x
         if pygame.sprite.spritecollideany(self, self.game.obstacles):
@@ -294,3 +300,13 @@ class Vacuum(pygame.sprite.Sprite):
         self.pos += self.vel * self.game.dt
         self.rect.x = self.pos.x
         self.rect.y = self.pos.y
+
+class Item(pygame.sprite.Sprite):
+    def __init__(self, game, pos, type,):
+        self.groups = game.all_sprites, game.items
+        pygame.sprite.Sprite.__init__(self, self.groups)
+        self.game = game
+        self.image = game.item_images[type]
+        self.rect = self.image.get_rect()
+        self.type = type
+        self.rect.center = pos
