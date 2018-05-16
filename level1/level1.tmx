@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" tiledversion="1.1.4" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="32" tileheight="32" infinite="0" nextobjectid="68">
- <tileset firstgid="1" source="../../Game/map/level_one.tsx"/>
+ <tileset firstgid="1" source="level_one.tsx"/>
  <layer name="Walls" width="40" height="30" locked="1">
   <data encoding="csv">
 303,299,299,299,299,299,299,299,299,299,299,299,299,299,299,299,299,299,299,299,299,299,299,299,299,299,299,299,299,299,299,299,299,299,299,299,299,299,299,302,
