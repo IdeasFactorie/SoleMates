@@ -1,26 +1,24 @@
 from sprites import *
 
 
+
 class Player(pygame.sprite.Sprite):
     def __init__(self, game, x, y):
         self.groups = game.all_sprites, game.socks
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.game = game
-
         self.walking = False
         self.current_frame = 0
         self.last_update = 0
         self.load_images()
         self.image = self.neutral_frames[0]
-
         self.rect = self.image.get_rect()
-        self.radius = 15
-
         self.vel = vec(0, 0)
         self.pos = vec(x, y)
-
         self.health = PLAYER_HEALTH
         self.lives = PLAYER_LIVES
+        self.trapped = False
+        self.countdown = WAIT_TIME
 
     def load_images(self):
         self.neutral_frames = [self.game.player_spritesheet.get_image(60, 0, 32, 32),
@@ -37,18 +35,29 @@ class Player(pygame.sprite.Sprite):
         for frame in self.walk_frames_r:
             self.walk_frames_l.append(pygame.transform.flip(frame, True, False))
 
-
     def get_keys(self):
         self.vel = vec(0, 0)
         keystate = pygame.key.get_pressed()
         if keystate[pygame.K_LEFT] or keystate[pygame.K_a]:
-            self.vel.x = -PLAYER_SPEED
+            if self.trapped:
+                self.vel.x = 0
+            else:
+                self.vel.x = -PLAYER_SPEED
         if keystate[pygame.K_RIGHT] or keystate[pygame.K_d]:
-            self.vel.x = PLAYER_SPEED
+            if self.trapped:
+                self.vel.x = 0
+            else:
+                self.vel.x = PLAYER_SPEED
         if keystate[pygame.K_UP] or keystate[pygame.K_w]:
-            self.vel.y = -PLAYER_SPEED
+            if self.trapped:
+                self.vel.y = 0
+            else:
+                self.vel.y = -PLAYER_SPEED
         if keystate[pygame.K_DOWN] or keystate[pygame.K_s]:
-            self.vel.y = PLAYER_SPEED
+            if self.trapped:
+                self.vel.y = 0
+            else:
+                self.vel.y = PLAYER_SPEED
         if self.vel.x != 0 and self.vel.y != 0:
             self.vel *= 0.7071
 
@@ -76,6 +85,19 @@ class Player(pygame.sprite.Sprite):
                 self.vel.y = 0
                 self.rect.y = self.pos.y
 
+    def collide_with_mobs(self):
+        hits = pygame.sprite.spritecollide(self, self.game.mobs, False)
+        if hits:
+            if self.countdown > 0:
+                self.trapped = True
+                print("Trapped" + str(self.countdown))
+                self.countdown -= 1         # not best method. reliant on gameloop updates/framerate
+            else:
+                self.pos = vec(500, 500)    # returns player to neutral location to break loop
+                self.trapped = False
+                self.countdown = WAIT_TIME
+                print("Free!")
+
 
     def update(self):
         self.get_keys()
@@ -85,6 +107,7 @@ class Player(pygame.sprite.Sprite):
         self.collide_with_obstacles(DIR_HORIZ)
         self.rect.y = self.pos.y
         self.collide_with_obstacles(DIR_VERT)
+        self.collide_with_mobs()
 
 
     def animate(self):

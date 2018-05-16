@@ -1,19 +1,16 @@
-import pygame
-import sys
-import os
-from os import path
-from settings import *
-from sprites import *
 from tilemap import *
 from hud import *
 from player import *
 from items import *
 
 
+
 class Game:
     def __init__(self, screen, clock):
         self.screen = screen
         self.clock = clock
+        self.mouse_pos = pygame.mouse.get_pos()
+
         self.load_data()
 
     def load_data(self):
@@ -27,12 +24,15 @@ class Game:
 
         # spritesheets
         self.player_spritesheet = Spritesheet(path.join(img_folder, PLAYER_SPRITESHEET))
-        self.clothes_spritesheet = Spritesheet(path.join(img_folder, CLOTHES_SPRITESHEET))
         self.robot_spritesheet = Spritesheet(path.join(img_folder, ROBOT_SPRITESHEET))
 
+        # images
+        self.clothes_img = pygame.image.load(path.join(img_folder, CLOTHES_IMG)).convert_alpha()
+        self.clothes_attack_img = pygame.image.load(path.join(img_folder, CLOTHES_ATTACK_IMG)).convert_alpha()
 
         # item files
         self.zap_img = pygame.image.load(path.join(img_folder, ZAP_IMG)).convert_alpha()
+        self.fluffball_img = pygame.image.load(path.join(img_folder, FLUFFBALL_IMG)).convert_alpha()
 
 
     # to start new game creates new instances of sprites, camera, tiles
@@ -40,25 +40,25 @@ class Game:
         self.all_sprites = pygame.sprite.Group()
         self.obstacles = pygame.sprite.Group()
         self.mobs = pygame.sprite.Group()
-        self.hits = pygame.sprite.Group()
+        self.zaps = pygame.sprite.Group()
         self.socks = pygame.sprite.Group()
-        self.items = pygame.sprite.Group()
+        self.collectables = pygame.sprite.Group()
 
-        # fetches collision object data from tmx file
+
+        # fetches object data from tmx file
         for tile_object in self.map.tmxdata.objects:
             if tile_object.name == 'player':
                 self.player = Player(self, tile_object.x, tile_object.y)
-                # obj_center = vec(tile_object.x + tile_object.width / 2,
-                #                  tile_object.y + tile_object.height / 2)
             if tile_object.name == 'obstacle':
                 Obstacle(self, tile_object.x, tile_object.y,
                          tile_object.width, tile_object.height)
             if tile_object.name == 'boss':
                 self.robot = Robot(self, tile_object.x, tile_object.y)
             if tile_object.name == 'mob':
-                self.clothes = Clothes(self, tile_object.x, tile_object.y)
-            if tile_object.name == 'clickable':
-                Item(self, tile_object.x, tile_object.y)
+                Clothes(self, tile_object.x, tile_object.y)
+            if tile_object.name == 'collectable':
+                Fluffball(self, tile_object.x, tile_object.y)
+
 
         self.camera = Camera(self.map.width, self.map.height)
 
@@ -66,6 +66,7 @@ class Game:
     # the gameloop
     def run(self):
         self.dt = self.clock.tick(FPS) / 1000
+        self.current_time = pygame.time.get_ticks()
         self.events()
         self.update()
         self.draw()
@@ -80,8 +81,8 @@ class Game:
         self.all_sprites.update()
         self.camera.update(self.player)
         # zaps hit socky
-        hits = pygame.sprite.groupcollide(self.socks, self.hits, False, True)
-        for hit in hits:
+        zaps = pygame.sprite.groupcollide(self.socks, self.zaps, False, True)
+        for hit in zaps:
             hit.health -= ZAP_DAMAGE
             if self.player.health < 0:
                 self.player.lives -= 1
@@ -89,9 +90,9 @@ class Game:
             if self.player.lives <= 0:
                 self.show_go_screen()
 
+
     # renders everything to screen
     def draw(self):
-        #pygame.display.set_caption("{:.2f}".format(self.clock.get_fps()))
         self.screen.blit(self.map_img, self.camera.apply_rect(self.map_rect))
         for sprite in self.all_sprites:
             if isinstance(sprite, Robot):
@@ -108,8 +109,7 @@ class Game:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.quit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                self.pos = pygame.mouse.get_pos()
+
 
     # for gameover
     def show_go_screen(self):

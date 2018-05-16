@@ -3,8 +3,6 @@ from settings import *
 vec = pygame.math.Vector2
 
 
-
-
 class Spritesheet:
     def __init__(self, filename):
         self.spritesheet = pygame.image.load(filename).convert()
@@ -30,36 +28,18 @@ class Clothes(pygame.sprite.Sprite):
         self.groups = game.all_sprites, game.mobs
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.game = game
-
         self.attacking = False
         self.current_frame = 0
         self.last_update = 0
-        self.load_images()
-        self.image = self.neutral_frames[0]
-
-        self.rect = self.image.get_rect()
+        # self.load_images()
+        self.image = game.clothes_img
         self.pos = vec(x, y)
+        self.rect = pygame.Rect(x, y, 80, 60)
 
-    def load_images(self):
-        self.neutral_frames = [self.game.clothes_spritesheet.get_image(0, 0, 134, 86)]
-        for frame in self.neutral_frames:
-            frame.set_colorkey(BLACK)
-        self.attacking_frames = [self.game.clothes_spritesheet.get_image(0, 190, 213, 87),
-                                 self.game.clothes_spritesheet.get_image(163, 0, 137, 121),
-                                 self.game.clothes_spritesheet.get_image(0, 87, 162, 121)]
 
     def update(self):
-        self.animate()
         self.rect.x = self.pos.x
         self.rect.y = self.pos.y
-
-    def animate(self):
-        now = pygame.time.get_ticks()
-        if not self.attacking:
-            if now - self.last_update > 200:
-                self.last_update = now
-                self.current_frame = (self.current_frame + 1) % len(self.neutral_frames)
-
 
 class Spider(pygame.sprite.Sprite):
     def __init__(self, game, x, y):
@@ -147,7 +127,7 @@ class Robot(pygame.sprite.Sprite):
 
 class Zap(pygame.sprite.Sprite):
     def __init__(self, game, fire_from):
-        self.groups = game.all_sprites, game.hits
+        self.groups = game.all_sprites, game.zaps
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.fire_from = fire_from

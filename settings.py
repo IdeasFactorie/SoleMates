@@ -23,9 +23,11 @@ PLAYER_HEALTH = 10
 PLAYER_LIVES = 4
 
 # mob settings
-CLOTHES_SPRITESHEET = 'clothes_spritesheet.png'
+# CLOTHES_SPRITESHEET = 'clothes_spritesheet.png'
+CLOTHES_IMG = 'clothes.png'
+CLOTHES_ATTACK_IMG = 'clothes_attacking.png'
 SPIDER_IMG = 'spider.png'
-
+WAIT_TIME = 200
 # boss settings
 ROBOT_SPRITESHEET = 'robot_spritesheet.png'
 ROBOT_HEALTH = 10
@@ -54,3 +56,6 @@ HEALTH_BORDER = 'healthbar.png'
 # directions
 DIR_HORIZ = 'x'
 DIR_VERT = 'y'
+
+# items
+FLUFFBALL_IMG = 'fluffball.png'
