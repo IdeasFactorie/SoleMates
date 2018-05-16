@@ -9,8 +9,8 @@ from os import path
 img_dir = path.join(path.dirname(__file__), 'img')
 snd_dir = path.join(path.dirname(__file__), 'snd')
 
-WIDTH = 480
-HEIGHT = 600
+WIDTH = 1024
+HEIGHT = 768
 FPS = 60
 POWERUP_TIME = 5000
 
@@ -29,7 +29,7 @@ BAR_HEIGHT = 10
 pygame.init()
 pygame.mixer.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("SOLESMATES")
+pygame.display.set_caption("SOLEMATES BONUS")
 clock = pygame.time.Clock()
 
 font_name = pygame.font.match_font('helsinki')
@@ -39,12 +39,12 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, player_img, bonus_level):
         pygame.sprite.Sprite.__init__(self)
         self.bonus_level = bonus_level
-        self.image = pygame.transform.scale(player_img, (20, 38))
+        self.image = pygame.transform.scale(player_img, (19, 59))
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
         self.radius = 20
         self.rect.centerx = WIDTH / 2
-        self.rect.bottom = HEIGHT - 10
+        self.rect.bottom = 100
         self.speedx = 0
         self.shield = 100
         self.shoot_delay = 250
@@ -65,7 +65,7 @@ class Player(pygame.sprite.Sprite):
         if self.hidden and pygame.time.get_ticks() - self.hide_timer > 1000:
             self.hidden = False
             self.rect.centerx = WIDTH / 2
-            self.rect.bottom = HEIGHT - 10
+            self.rect.bottom = 100
 
         self.speedx = 0
         keystate = pygame.key.get_pressed()
@@ -90,7 +90,7 @@ class Player(pygame.sprite.Sprite):
         if now - self.last_shot > self.shoot_delay:
             self.last_shot = now
             if self.power == 1:
-                bullet = Bullet(self.rect.centerx, self.rect.top, self.bonus_level.bullet_img)
+                bullet = Bullet(self.rect.centerx, self.rect.bottom, self.bonus_level.bullet_img)
                 self.bonus_level.all_sprites.add(bullet)
                 self.bonus_level.bullets.add(bullet)
                 self.bonus_level.shoot_sound.play()
@@ -113,23 +113,23 @@ class Player(pygame.sprite.Sprite):
 class Mob(pygame.sprite.Sprite):
     def __init__(self, mob_img):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.transform.scale(mob_img, (60, 40))
+        self.image = pygame.transform.scale(mob_img, (57, 54))
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
         self.radius = int(self.rect.width * .85 / 2)
         self.rect.x = random.randrange(WIDTH - self.rect.width)
-        self.rect.bottom = random.randrange(-80, -20)
-        self.speedy = random.randrange(1, 8)
+        self.rect.bottom = 822
+        self.speedy = random.randrange(-8, -1)
         self.speedx = random.randrange(-3, 3)
         self.last_update = pygame.time.get_ticks()
 
     def update(self):
         self.rect.x += self.speedx
         self.rect.y += self.speedy
-        if self.rect.top > HEIGHT + 10 or self.rect.left < -100 or self.rect.right > WIDTH + 100:
+        if self.rect.top <= 0 or self.rect.left < -100 or self.rect.right > WIDTH + 100:
             self.rect.x = random.randrange(WIDTH - self.rect.width)
-            self.rect.y = random.randrange(-100, -40)
-            self.speedy = random.randrange(1, 8)
+            self.rect.y = random.randrange(822)
+            self.speedy = random.randrange(-8, -1)
 
 
 class Bullet(pygame.sprite.Sprite):
@@ -138,9 +138,9 @@ class Bullet(pygame.sprite.Sprite):
         self.image = bullet_img
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
-        self.rect.bottom = y
+        self.rect.top = y
         self.rect.centerx = x
-        self.speedy = -10
+        self.speedy = 10
 
     def update(self):
         self.rect.y += self.speedy
@@ -202,14 +202,14 @@ class BonusLevel:
         self.powerups = pygame.sprite.Group()
 
         # Load all game graphics
-        self.background = pygame.image.load(path.join(img_dir, "starfield.png")).convert()
+        self.background = pygame.image.load(path.join(img_dir, "background.png")).convert()
         self.background_rect = self.background.get_rect()
         self.player_img = pygame.image.load(path.join(img_dir, "socky.png")).convert_alpha()
-        self.player_mini_img = pygame.transform.scale(self.player_img, (25, 19))
-        self.player_mini_img.set_colorkey(BLACK)
+        self.player_mini_img = pygame.image.load(path.join(img_dir, "lives.png")).convert_alpha()
         self.mob_img = pygame.image.load(path.join(img_dir, "spider.png")).convert_alpha()
-        self.bullet_img = pygame.image.load(path.join(img_dir, "laserRed16.png")).convert()
+        self.bullet_img = pygame.image.load(path.join(img_dir, "fluffball.png")).convert_alpha()
         self.explosion_anim = {'lg': [], 'sm': [], 'player': []}
+
         for i in range(9):
             filename = 'regularExplosion0{}.png'.format(i)
             img = pygame.image.load(path.join(img_dir, filename)).convert()
@@ -231,10 +231,10 @@ class BonusLevel:
         self.power_sound = pygame.mixer.Sound(path.join(snd_dir, 'pow5.wav'))
         self.mob_death_sound = pygame.mixer.Sound(path.join(snd_dir, 'sdeath.wav'))
         self.player_die_sound = pygame.mixer.Sound(path.join(snd_dir, 'rumble1.ogg'))
-        pygame.mixer.music.load(path.join(snd_dir, 'tgfcoder-FrozenJam-SeamlessLoop.ogg'))
+        #pygame.mixer.music.load(path.join(snd_dir, 'tgfcoder-FrozenJam-SeamlessLoop.ogg'))
         pygame.mixer.music.set_volume(0.4)
 
-        pygame.mixer.music.play(loops=-1)
+#        pygame.mixer.music.play(loops=-1)
 
     @staticmethod
     def draw_text(surf, text, size, x, y):
